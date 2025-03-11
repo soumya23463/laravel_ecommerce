@@ -24,3 +24,6 @@ body {
 .theme-footer{
     background-color: #0066cc;
 }
+.theme-product img:hover{
+transform: scaleX(-1);
+}
