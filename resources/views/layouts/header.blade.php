@@ -9,13 +9,14 @@
       <link rel="stylesheet" href="{{ asset('asset/css/style.css') }}">
       <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     
-    <title>Ecommerce</title>
+    <title>@stack('title')</title>
   </head>
   <body>
  
     <nav class="navbar navbar-expand-lg navbar-light theme-navbar">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#"><h1 class="text-light">Ecommerce</h1></a>
+          <a href="{{ url('/') }}"><img src="{{ asset('asset/images/logo/logo.png') }}" class="card-img-top" alt="..." style="width: 250px;">
+          </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -44,7 +45,7 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
           <ul class="nav">
             <li class="nav-item ">
-              <a class="nav-link  text-dark"href="#" >Mobile</a>
+              <a class="nav-link  text-dark"href="{{ url('category/electronics') }}" >Mobile</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-dark"href="#">Fashions</a>
@@ -59,7 +60,7 @@
               <a class="nav-link text-dark"href="#">Grocery</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark"href="#">Appliences</a>
+              <a class="nav-link text-dark"href="{{ url('category/electronics/tv') }}">Appliences</a>
             </li>
         </div>
       </div>

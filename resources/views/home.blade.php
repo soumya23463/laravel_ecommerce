@@ -1,5 +1,8 @@
 
 @extends('layouts.main')
+@push('title')
+Home
+@endpush
 @section('content')
 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
@@ -80,6 +83,114 @@
           </div>
   </section>
 
+  {{--  Best of  Electronics  --}}
+ <section class="my-5">
+   
+    
+  <div class="container"> 
+    <div class="d-flex bd-highlight mb-3">
+      <div class="me-auto bd-highlight"> 
+        <h2>Best of  Electronics</h2>
+      </div>
+      <div class="p-2 bd-highlight">
+        <a href="#"class="btn btn-sm theme-orange-btn text-light">View All</a></div>
+      
+    </div>
+             
+         
+      <div class="row theme-product">
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <a href="#"class="text-decoration-none"><img src="{{ asset('asset/images/products/5.jpg') }}" class="card-img-top" alt="..."></a>
+                <h6 class="card-title text-center"> <a href="#"class="text-decoration-none">Camera </a></h6>
+                <h5 class="card-title text-center">₹ 84,999</h5>
+            </div>
+          </div>
+      </div>
+          <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <a href="#"class="text-decoration-none"><img src="{{ asset('asset/images/products/4.jpg') }}" class="card-img-top" alt="..."></a>
+                    <h6 class="card-title text-center"> <a href="#"class="text-decoration-none">Chair</a></h6>
+                    <h5 class="card-title text-center">₹ 2,999</h5>
+                </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <a href="#"class="text-decoration-none"><img src="{{ asset('asset/images/products/7.jpg') }}" class="card-img-top" alt="..."></a>
+                  <h6 class="card-title text-center"> <a href="#"class="text-decoration-none">Television</a></h6>
+                  <h5 class="card-title text-center">₹ 92,999</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <a href="#" class="text-decoration-none"><img src="{{ asset('asset/images/products/8.jpg') }}" class="card-img-top" alt="..."></a>
+                <h6 class="card-title text-center text-dark"> <a href="#"class="text-decoration-none "> Washing Machine</a></h6>
+                <h5 class="card-title text-center">₹ 14,999</h5>
+            </div>
+          </div>
+          </div>
+      </div>
+</section>
+ {{--  Popular Categories  --}}
+ <section class="my-5">
+   
+    
+  <div class="container"> 
+    <div class="d-flex bd-highlight mb-3">
+      <div class="me-auto bd-highlight"> 
+        <h2>Popular Categories</h2>
+      </div>
+      <div class="p-2 bd-highlight">
+        <a href="#"class="btn btn-sm theme-orange-btn text-light">View All</a></div>
+      
+    </div>
+             
+         
+      <div class="row theme-product">
+        <div class="col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <a href="#"class="text-decoration-none"><img src="{{ asset('asset/images/products/5.jpg') }}" class="card-img-top" alt="..."></a>
+                <h6 class="card-title text-center"> <a href="#"class="text-decoration-none">Camera </a></h6>
+                <h5 class="card-title text-center">₹ 84,999</h5>
+            </div>
+          </div>
+      </div>
+          <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  <a href="#"class="text-decoration-none"><img src="{{ asset('asset/images/products/4.jpg') }}" class="card-img-top" alt="..."></a>
+                    <h6 class="card-title text-center"> <a href="#"class="text-decoration-none">Chair</a></h6>
+                    <h5 class="card-title text-center">₹ 2,999</h5>
+                </div>
+              </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <a href="#"class="text-decoration-none"><img src="{{ asset('asset/images/products/7.jpg') }}" class="card-img-top" alt="..."></a>
+                  <h6 class="card-title text-center"> <a href="#"class="text-decoration-none">Television</a></h6>
+                  <h5 class="card-title text-center">₹ 92,999</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+          <div class="card">
+            <div class="card-body">
+              <a href="#" class="text-decoration-none"><img src="{{ asset('asset/images/products/8.jpg') }}" class="card-img-top" alt="..."></a>
+                <h6 class="card-title text-center text-dark"> <a href="#"class="text-decoration-none "> Washing Machine</a></h6>
+                <h5 class="card-title text-center">₹ 14,999</h5>
+            </div>
+          </div>
+          </div>
+      </div>
+</section>
   {{--  Recently Viewed  --}}
   <section class="my-5">
    
@@ -134,4 +245,6 @@
             </div>
         </div>
 </section>
+
+ 
 @endsection
