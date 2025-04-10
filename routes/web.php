@@ -1,8 +1,20 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 
-Auth::routes();
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\AuthAdmin;
+use Illuminate\Support\Facades\Auth;
+
+Auth::routes(); // Laravel's built-in auth routes
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.account.dashboard');
+});
+Route::middleware(['auth', AuthAdmin::class])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+});
