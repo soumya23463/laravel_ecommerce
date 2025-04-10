@@ -9,7 +9,7 @@ use App\Http\Middleware\AuthAdmin;
 use Illuminate\Support\Facades\Auth;
 
 Auth::routes(); // Laravel's built-in auth routes
- 
+
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 Route::middleware(['auth'])->group(function () {

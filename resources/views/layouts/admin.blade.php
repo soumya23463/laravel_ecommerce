@@ -173,6 +173,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="section-content-right">
 
                     <div class="header-dashboard">
