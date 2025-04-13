@@ -46,16 +46,7 @@ class AdminController extends Controller
         $brand->save();
         return redirect()->route('admin.brands')->with('status', 'Record has been added successfully !');
     }
-    public function GenerateBrandThumbailImage($image, $imageName)
-    {
-        $designationPath = public_path('uploads/brands');
-        // Make sure the directory exists
-        $img = Image::read($image->path());
-        $img->cover(124, 124, "top");
-        $img->resize(124, 124, function ($constraint) {
-            $constraint->aspectRatio();
-        })->save($designationPath . '/' . $imageName);
-    }
+
 
 
     public function edit_brand($id)
@@ -102,5 +93,51 @@ class AdminController extends Controller
     {
         $categories = Category::orderBy('id', 'DESC')->paginate(10);
         return view("admin.categories", compact('categories'));
+    }
+
+    public function add_category()
+    {
+        return view("admin.category-add");
+    }
+
+
+    public function add_category_store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:categories,slug',
+            'image' => 'mimes:png,jpg,jpeg|max:2048'
+        ]);
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $image = $request->file('image');
+        $file_extention = $request->file('image')->extension();
+        $file_name = Carbon::now()->timestamp . '.' . $file_extention;
+        $this->GenerateBrandThumbailCategories($image, $file_name);
+        $category->image = $file_name;
+        $category->save();
+        return redirect()->route('admin.categories')->with('status', 'Record has been added successfully !');
+    }
+
+    public function GenerateBrandThumbailImage($image, $imageName)
+    {
+        $designationPath = public_path('uploads/brands');
+        // Make sure the directory exists
+        $img = Image::read($image->path());
+        $img->cover(124, 124, "top");
+        $img->resize(124, 124, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($designationPath . '/' . $imageName);
+    }
+    public function GenerateBrandThumbailCategories($image, $imageName)
+    {
+        $designationPath = public_path('uploads/categories');
+        // Make sure the directory exists
+        $img = Image::read($image->path());
+        $img->cover(124, 124, "top");
+        $img->resize(124, 124, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save($designationPath . '/' . $imageName);
     }
 }
