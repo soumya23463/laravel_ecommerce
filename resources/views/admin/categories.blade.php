@@ -71,13 +71,19 @@
                             {{--  <td><a href="{{route('admin.category.products',['category_slug'=>$category->slug])}}" target="_blank">{{$category->products()->count()}}</a></td>  --}}
                             <td>
                                 <div class="list-icon-function">
+                                    <a href="{{route('admin.category.edit',['id'=>$category->id])}}">
+
                                     <div class="item edit">
                                           <i class="icon-edit-3"></i>
                                    </div>
-                                    <div class="item text-danger delete">
-                                          <i class="icon-trash-2"></i>
-                                   </div>
-                                </div>
+                                {{--  </a>  --}}
+                                <form action="{{ route('admin.brand.delete', ['id' => $category->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="item text-danger delete" style="border: none; background: none;">
+                                        <i class="icon-trash-2"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach
