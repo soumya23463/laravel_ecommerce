@@ -493,4 +493,57 @@ class AdminController extends Controller
 
         return redirect()->route('admin.products')->with('status', 'Product updated successfully!');
     }
+
+    // public function delete_product($id)
+    // {
+    //     $product = Product::find($id);
+    //     $product->delete();
+    //     return redirect()->route('admin.products')->with('status', 'Record has been deleted successfully !');
+    // }
+
+    public function delete_product($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Delete main image
+        if ($product->image) {
+            $mainImage = $product->image;
+
+            $mainPath = public_path('uploads/products/' . $mainImage);
+            $thumbPath = public_path('uploads/products/thumbnails/' . $mainImage);
+
+            if (File::exists($mainPath)) {
+                File::delete($mainPath);
+            }
+
+            if (File::exists($thumbPath)) {
+                File::delete($thumbPath);
+            }
+        }
+
+        // Delete gallery images
+        if ($product->images) {
+            $galleryImages = explode(',', $product->images);
+
+            foreach ($galleryImages as $img) {
+                $img = trim($img);
+
+                $imgPath = public_path('uploads/products/' . $img);
+                $thumbPath = public_path('uploads/products/thumbnails/' . $img);
+
+                if (File::exists($imgPath)) {
+                    File::delete($imgPath);
+                }
+
+                if (File::exists($thumbPath)) {
+                    File::delete($thumbPath);
+                }
+            }
+        }
+
+        // Delete product record
+        $product->delete();
+
+        return redirect()->route('admin.products')->with('status', 'Record has been deleted successfully!');
+    }
 }
