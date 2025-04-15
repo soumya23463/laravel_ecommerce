@@ -299,4 +299,198 @@ class AdminController extends Controller
             $constraint->aspectRatio();
         })->save($designationPath . '/' . $imageName);
     }
+
+    public function edit_product($id)
+    {
+        $product = Product::find($id);
+        $categories = Category::Select('id', 'name')->orderBy('name')->get();
+        $brands = Brand::Select('id', 'name')->orderBy('name')->get();
+        return view('admin.product-edit', compact('product', 'categories', 'brands'));
+    }
+
+
+    // public function update_product(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'slug' => 'required|unique:products,slug,' . $request->id,
+    //         'category_id' => 'required',
+    //         'brand_id' => 'required',
+    //         'short_description' => 'required',
+    //         'description' => 'required',
+    //         'regular_price' => 'required',
+    //         'sale_price' => 'required',
+    //         'SKU' => 'required',
+    //         'stock_status' => 'required',
+    //         'featured' => 'required',
+    //         'quantity' => 'required',
+    //         'image' => 'required|mimes:png,jpg,jpeg|max:2048'
+    //     ]);
+
+    //     $product = Product::find($request->id);
+
+    //     $product->name = $request->name;
+    //     $product->slug = Str::slug($request->name);
+    //     $product->category_id = $request->category_id;
+    //     $product->brand_id = $request->brand_id;
+    //     $product->short_description = $request->short_description;
+    //     $product->description = $request->description;
+    //     $product->regular_price = $request->regular_price;
+    //     $product->sale_price = $request->sale_price;
+    //     $product->SKU = $request->SKU;
+    //     $product->stock_status = $request->stock_status;
+    //     $product->featured = $request->featured;
+    //     $product->quantity = $request->quantity;
+
+    //     $current_timestamp = Carbon::now()->timestamp;
+
+    //     // Handle main image
+    //     if ($request->hasFile('image')) {
+    //         // Delete old image if exists
+    //         // if (File::exists(public_path('uploads/products/' . $product->image))) {
+    //         //     File::delete(public_path('uploads/products/' . $product->image));
+    //         // }
+    //         // if (File::exists(public_path('uploads/products/thumbnails/' . $product->image))) {
+    //         //     File::delete(public_path('uploads/products/thumbnails/' . $product->image));
+    //         // }
+
+    //         $file_ext = $request->file('image')->extension();
+    //         $file_name = $current_timestamp . '.' . $file_ext;
+    //         $path = $request->image->storeAs('products', $file_name, 'public');
+    //         $product->image = $path;
+    //     }
+
+    //     // Handle gallery images
+    //     if ($request->hasFile('images')) {
+    //         // Delete old gallery images
+    //         // if (!empty($product->images)) {
+    //         //     foreach (explode(',', $product->images) as $ofile) {
+    //         //         if (File::exists(public_path('uploads/products/' . trim($ofile)))) {
+    //         //             File::delete(public_path('uploads/products/' . trim($ofile)));
+    //         //         }
+    //         //         if (File::exists(public_path('uploads/products/thumbnails/' . trim($ofile)))) {
+    //         //             File::delete(public_path('uploads/products/thumbnails/' . trim($ofile)));
+    //         //         }
+    //         //     }
+    //         // }
+
+    //         // Save new gallery images
+    //         $allowedfileExtension = ['jpg', 'png', 'jpeg'];
+    //         $files = $request->file('images');
+    //         $gallery_arr = [];
+    //         $counter = 1;
+
+    //         foreach ($files as $file) {
+    //             $gext = $file->getClientOriginalExtension();
+    //             if (in_array($gext, $allowedfileExtension)) {
+    //                 $gfilename = $current_timestamp . '-' . $counter . '.' . $gext;
+    //                 $gpath = $file->storeAs('products', $gfilename, 'public');
+    //                 $gallery_arr[] = $gpath;
+    //                 $counter++;
+    //             }
+    //         }
+
+    //         $product->images = implode(', ', $gallery_arr);
+    //     }
+
+    //     $product->save();
+
+    //     return redirect()->route('admin.products')->with('status', 'Record has been updated successfully!');
+    // }
+
+    public function update_product(Request $request)
+    {
+        // Validate request data
+        $request->validate([
+            'name' => 'required',
+            'slug' => 'required|unique:products,slug,' . $request->id,
+            'short_description' => 'required',
+            'description' => 'required',
+            'regular_price' => 'required',
+            'sale_price' => 'required',
+            'SKU' => 'required',
+            'stock_status' => 'required',
+            'featured' => 'required',
+            'quantity' => 'required',
+            'category_id' => 'required',
+            'brand_id' => 'required',
+            'image' => 'nullable|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
+        // Find product
+        $product = Product::findOrFail($request->id);
+
+        // Update fields
+        $product->name = $request->name;
+        $product->slug = Str::slug($request->name);
+        $product->short_description = $request->short_description;
+        $product->description = $request->description;
+        $product->regular_price = $request->regular_price;
+        $product->sale_price = $request->sale_price;
+        $product->SKU = $request->SKU;
+        $product->stock_status = $request->stock_status;
+        $product->featured = $request->featured;
+        $product->quantity = $request->quantity;
+        $product->category_id = $request->category_id;
+        $product->brand_id = $request->brand_id;
+
+        // Upload new image if provided
+        if ($request->hasFile('image')) {
+            $oldImage = $product->image;
+
+            $image = $request->file('image');
+            $imageName = Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+
+            // Generate new thumbnail + image
+            $this->GenerateProductThumbnailImage($image, $imageName);
+            $product->image = $imageName;
+
+            // Delete old image
+            if ($oldImage && File::exists(public_path('uploads/products/' . $oldImage))) {
+                File::delete(public_path('uploads/products/' . $oldImage));
+            }
+            if ($oldImage && File::exists(public_path('uploads/products/thumbnails/' . $oldImage))) {
+                File::delete(public_path('uploads/products/thumbnails/' . $oldImage));
+            }
+        }
+
+        // Handle gallery images (optional)
+        $gallery_arr = [];
+        $counter = 1;
+
+        if ($request->hasFile('images')) {
+            // Delete old gallery images
+            if ($product->images) {
+                foreach (explode(',', $product->images) as $oldFile) {
+                    if (File::exists(public_path('uploads/products/' . $oldFile))) {
+                        File::delete(public_path('uploads/products/' . $oldFile));
+                    }
+                    if (File::exists(public_path('uploads/products/thumbnails/' . $oldFile))) {
+                        File::delete(public_path('uploads/products/thumbnails/' . $oldFile));
+                    }
+                }
+            }
+
+            $files = $request->file('images');
+            $timestamp = Carbon::now()->timestamp;
+
+            foreach ($files as $file) {
+                $gextension = $file->getClientOriginalExtension();
+                if (in_array($gextension, ['jpg', 'png', 'jpeg'])) {
+                    $gfilename = $timestamp . '-' . $counter . '.' . $gextension;
+
+                    $this->GenerateProductImages($file, $gfilename);
+
+                    array_push($gallery_arr, $gfilename);
+                    $counter++;
+                }
+            }
+
+            $product->images = implode(',', $gallery_arr);
+        }
+
+        $product->save();
+
+        return redirect()->route('admin.products')->with('status', 'Product updated successfully!');
+    }
 }
