@@ -253,7 +253,7 @@
                   <div class="slideshow-text container p-3 p-xl-5">
                     <h2
                       class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                      Women's <br /><strong>ACCESSORIES</strong></h2>
+                      Women's <br /><strong>ACCESSO RIES</strong></h2>
                     <p class="mb-0 animate animate_fade animate_btt animate_delay-5">Accessories are the best way to
                       update your look. Add a title edge with new styles and new colors, or go for timeless pieces.</h6>
                   </div>
@@ -389,9 +389,21 @@
                             <use href="#icon_next_sm" />
                             </svg></span>
                         </div>
-                        <button
-                        class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart js-open-aside"
+                         @if(Cart::instance("cart")->content()->Where('id',$product->id)->count()>0)
+                                <a href="{{route('cart.index')}}" class="pc__atc anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium "
+                        data-aside="cartDrawerbtn btn-warning mb-3">Go to Cart</a>
+                         @else
+                          <form name="addtocart-form" method="post" action="{{route('cart.add')}}">
+                          @csrf
+                           <input type="hidden" name="id" value="{{$product->id}}" />
+                           <input type="hidden" name="quantity" value="1" />
+                          <input type="hidden" name="name" value="{{$product->name}}" />
+                          <input type="hidden" name="price" value="{{$product->sale_price == '' ? $product->regular_price:$product->sale_price}}" />
+                        <button type="submit"
+                        class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium "
                         data-aside="cartDrawer" title="Add To Cart">Add To Cart</button>
+                          </form>
+                        @endif
                     </div>
 
                     <div class="pc__info position-relative">
