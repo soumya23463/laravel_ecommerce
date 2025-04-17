@@ -26,38 +26,23 @@
             </h5>
             <div id="accordion-filter-1" class="accordion-collapse collapse show border-0"
               aria-labelledby="accordion-heading-1" data-bs-parent="#categories-list">
-              <div class="accordion-body px-0 pb-0 pt-3">
+              <div class="accordion-body px-0 pb-0 pt-3 ">
                 <ul class="list list-inline mb-0">
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Dresses</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Shorts</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Sweatshirts</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Swimwear</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Jackets</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">T-Shirts & Tops</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Jeans</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Trousers</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Men</a>
-                  </li>
-                  <li class="list-item">
-                    <a href="#" class="menu-link py-1">Jumpers & Cardigans</a>
-                  </li>
+                    @foreach ($categories as $category)
+                    <li class="list-item">
+                        <span class="menu-link py-1">
+                        <input type="checkbox" class="chk-category" name="categories" value="{{ $category->id }}"
+                        @if(in_array($category->id,explode(',',$f_categories))) checked="checked" @endif
+                        >
+                        {{ $category->name }}
+                        </span>
+                        <span class="text-right float-end">
+                            {{ $category->products->count() }}
+                        </span>
+                      </li>
+                    @endforeach
+
+
                 </ul>
               </div>
             </div>
@@ -435,7 +420,7 @@
     <input type="hidden" id="size" name="size" value="{{ $size }}" />
     <input type="hidden" id="orderInput" name="order" value="{{ $order }}">
     <input type="hidden" id="brandInput" name="brands" >
-
+    <input type="hidden" name="categories" id="hdnCategories" />
 </form>
 
 @endsection
@@ -466,7 +451,24 @@ $(function() {
         console.log("Selected brands:", brands);
         $("#frmfilter").submit();
     });
+
+    $("input[name='categories']").on("change",function(){
+                var categories ="";
+                $("input[name='categories']:checked").each(function(){
+                    if(categories=="")
+                    {
+                        categories += $(this).val();
+                    }
+                    else{
+                        categories += "," + $(this).val();
+                    }
+                });
+                $("#hdnCategories").val(categories);
+                $("#frmfilter").submit();
+            });
 });
+
+
 
 </script>
 @endpush
