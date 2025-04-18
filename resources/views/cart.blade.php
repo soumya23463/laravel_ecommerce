@@ -101,11 +101,28 @@
             </tbody>
           </table>
           <div class="cart-table-footer">
-            <form action="#" class="position-relative bg-body">
-              <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
-              <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit"
-                value="APPLY COUPON">
-            </form>
+
+                {{--  @if(!Session::has("coupon"))  --}}
+                <form class="position-relative bg-body" method="POST" action="{{route('cart.coupon.apply')}}">
+                    @csrf
+                    <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code"
+    value="{{ Session::has('coupon') ? Session::get('coupon')['code'] . ' Applied!' : '' }}">
+
+                    <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
+                </form>
+            {{--  @endif  --}}
+            @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @elseif (Session::has('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ Session::get('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
             <form class="position-relative bg-body" method="POST" action="{{route('cart.empty')}}">
                 @csrf
                 @method('DELETE')
@@ -115,38 +132,67 @@
         </div>
 
         <div class="shopping-cart__totals-wrapper">
-          <div class="sticky-content">
-            <div class="shopping-cart__totals">
-              <h3>Cart Totals</h3>
-              <table class="cart-totals">
-                <tbody>
-                  <tr>
-                    <th>Subtotal</th>
-                    <td>${{ Cart::instance('cart')->subtotal() }}</td>
-                  </tr>
-                  <tr>
-                    <th>Shipping</th>
-                    <td>
-                     Free
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>VAT</th>
-                    <td>${{ Cart::instance('cart')->tax() }}</td>
-                  </tr>
-                  <tr>
-                    <th>Total</th>
-                    <td>${{ Cart::instance('cart')->total() }}</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="sticky-content">
+                <div class="shopping-cart__totals">
+                    <h3>Cart Totals</h3>
+                    @if(Session::has('discounts'))
+                        <table class="cart-totals">
+                            <tbody>
+                                <tr>
+                                    <th>Subtotal</th>
+                                    <td>${{Cart::instance('cart')->subtotal()}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Discount {{Session("coupon")["code"]}}</th>
+                                    <td>-${{Session("discounts")["discount"]}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Subtotal After Discount</th>
+                                    <td>${{Session("discounts")["subtotal"]}}</td>
+                                </tr>
+                                <tr>
+                                    <th>SHIPPING</th>
+                                    <td class="text-right">Free</td>
+                                </tr>
+                                <tr>
+                                    <th>VAT</th>
+                                    <td>${{Session("discounts")["tax"]}}</td>
+                                </tr>
+                                <tr class="cart-total">
+                                    <th>Total</th>
+                                    <td>${{Session("discounts")["total"]}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @else
+                        <table class="cart-totals">
+                            <tbody>
+                                <tr>
+                                    <th>Subtotal</th>
+                                    <td>${{Cart::instance('cart')->subtotal()}}</td>
+                                </tr>
+                                <tr>
+                                    <th>SHIPPING</th>
+                                    <td class="text-right">Free</td>
+                                </tr>
+                                <tr>
+                                    <th>VAT</th>
+                                    <td>${{Cart::instance('cart')->tax()}}</td>
+                                </tr>
+                                <tr class="cart-total">
+                                    <th>Total</th>
+                                    <td>${{Cart::instance('cart')->total()}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endif
+                </div>
+                <div class="mobile_fixed-btn_wrapper">
+                    <div class="button-wrapper container">
+                        <a href="#" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
+                    </div>
+                </div>
             </div>
-            <div class="mobile_fixed-btn_wrapper">
-              <div class="button-wrapper container">
-                <a href="checkout.html" class="btn btn-primary btn-checkout">PROCEED TO CHECKOUT</a>
-              </div>
-            </div>
-          </div>
         </div>
         @else
             <div class="row">
