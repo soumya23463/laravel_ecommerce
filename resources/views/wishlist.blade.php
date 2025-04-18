@@ -39,8 +39,14 @@
                                 <span class="shopping-cart__product-price">${{$wishlistItem->price}}</span>
                             </td>
                             <td>
-                                <div class="del-action">
-                                    {{--  <button type="submit" class="remove-cart btn btn-sm btn-warning">Move to Cart</button>  --}}
+                                <div class="row">
+                                    <div class="col-6">
+                                        <form method="POST" action="{{route('wishlist.move.to.cart',['rowId'=>$wishlistItem->rowId])}}">
+                                            @csrf
+                                            <button type="submit" class="remove-cart btn btn-sm btn-warning">Move to Cart</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-6">
 
                                     <form method="POST"
                                     action="{{ route('wishlist.remove', ['rowId' => $wishlistItem->rowId]) }}"
@@ -57,6 +63,7 @@
 
                                   </a>
                               </form>
+                            </div>
                                 </div>
                             </td>
                         </tr>
