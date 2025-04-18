@@ -30,6 +30,9 @@ Route::delete('/wishlist/remove/{rowId}', [WishlistController::class, 'remove_it
 Route::delete('/wishlist/clear', [WishlistController::class, 'empty_wishlist'])->name('wishlist.empty');
 Route::post('/wishlist/move-to-cart/{rowId}', [WishlistController::class, 'move_to_cart'])->name('wishlist.move.to.cart');
 
+
+Route::get('/admin/coupons', [AdminController::class, 'coupons'])->name('admin.coupons');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
 });
