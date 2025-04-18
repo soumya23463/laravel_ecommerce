@@ -40,9 +40,23 @@
                             </td>
                             <td>
                                 <div class="del-action">
-                                    <button type="submit" class="remove-cart btn btn-sm btn-warning">Move to Cart</button>
+                                    {{--  <button type="submit" class="remove-cart btn btn-sm btn-warning">Move to Cart</button>  --}}
 
-                                    <button type="submit" class="remove-cart btn btn-sm btn-danger">Remove</button>
+                                    <form method="POST"
+                                    action="{{ route('wishlist.remove', ['rowId' => $wishlistItem->rowId]) }}"
+                                    id="remove-item-{{ $wishlistItem->rowId }}">
+                                  @csrf
+                                  @method('DELETE')
+
+                                  <a href="javascript:void(0)"
+                                     class="remove-cart"
+                                     onclick="document.getElementById('remove-item-{{ $wishlistItem->rowId }}').submit();">
+                                     <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.259435 8.85506C0.0889381 8.94404 0.0889381 9.14495 0.259435 9.23393C0.348413 9.28342 0.437391 9.29425 0.537535 9.29425C0.637678 9.29425 0.726656 9.28342 0.815633 9.23393L5 5.03754L9.18437 9.23393C9.362 9.41156 9.66159 9.41156 9.83921 9.23393C10.0168 9.0563 10.0168 8.75671 9.83921 8.57909L5.64282 4.39471L9.83921 0.200322C10.0168 0.0226968 10.0168 -0.276892 9.83921 -0.454518C9.66159 -0.632143 9.362 -0.632143 9.18437 -0.454518L5 3.74087L0.815633 -0.454518C0.637678 -0.632143 0.348413 -0.632143 0.170459 -0.454518C-0.0074951 -0.276892 -0.0074951 0.0226968 0.170459 0.200322L4.36685 4.39471L0.170459 8.57909C0.0922592 8.65729 0.0427701 8.75671 0.0427701 8.85506C0.0427701 8.95341 0.0922592 9.05283 0.170459 9.13103L0.259435 8.85506Z"/>
+                                      </svg>
+
+                                  </a>
+                              </form>
                                 </div>
                             </td>
                         </tr>
@@ -50,7 +64,12 @@
                     </tbody>
                 </table>
                 <div class="cart-table-footer">
-                    <button class="btn btn-light" type="submit">CLEAR WISHLIST</button>
+
+                        <form method="POST" action="{{ route('wishlist.empty') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-light">CLEAR WISHLIST</button>
+                        </form>
                 </div>
             </div>
             @else
