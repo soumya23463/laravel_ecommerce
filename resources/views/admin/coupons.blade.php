@@ -75,7 +75,14 @@
                                             </div>
                                         </a>
                                         <div class="item text-danger delete">
-                                                <i class="icon-trash-2"></i>
+                                            <form action="{{ route('admin.coupon.delete', ['id' => $coupon->id]) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="delete text-danger" style="border: none; background: none;">
+                                                    <i class="icon-trash-2"></i>
+                                                </button>
+                                            </form>
+
                                         </div>
                                     </div>
                                 </td>
@@ -93,3 +100,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    $(function () {
+        $(".delete").on('click', function (e) {
+            e.preventDefault();
+            const form = $(this).closest("form");
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to delete this record?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush
