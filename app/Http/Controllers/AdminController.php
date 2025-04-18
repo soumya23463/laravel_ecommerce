@@ -556,25 +556,49 @@ class AdminController extends Controller
     }
 
     public function add_coupon()
-    {        
+    {
         return view("admin.coupon-add");
     }
-public function add_coupon_store(Request $request)
-{
-    $request->validate([
-        'code' => 'required',
-        'type' => 'required',
-        'value' => 'required|numeric',
-        'cart_value' => 'required|numeric',
-        'expiry_date' => 'required|date'
-    ]);
-    $coupon = new Coupon();
-    $coupon->code = $request->code;
-    $coupon->type = $request->type;
-    $coupon->value = $request->value;
-    $coupon->cart_value = $request->cart_value;
-    $coupon->expiry_date = $request->expiry_date;
-    $coupon->save();
-    return redirect()->route("admin.coupons")->with('status','Record has been added successfully !');
-}
+    public function add_coupon_store(Request $request)
+    {
+        $request->validate([
+            'code' => 'required',
+            'type' => 'required',
+            'value' => 'required|numeric',
+            'cart_value' => 'required|numeric',
+            'expiry_date' => 'required|date'
+        ]);
+        $coupon = new Coupon();
+        $coupon->code = $request->code;
+        $coupon->type = $request->type;
+        $coupon->value = $request->value;
+        $coupon->cart_value = $request->cart_value;
+        $coupon->expiry_date = $request->expiry_date;
+        $coupon->save();
+        return redirect()->route("admin.coupons")->with('status', 'Record has been added successfully !');
+    }
+
+    public function edit_coupon($id)
+    {
+        $coupon = Coupon::find($id);
+        return view('admin.coupon-edit', compact('coupon'));
+    }
+    public function update_coupon(Request $request)
+    {
+        $request->validate([
+            'code' => 'required',
+            'type' => 'required',
+            'value' => 'required|numeric',
+            'cart_value' => 'required|numeric',
+            'expiry_date' => 'required|date'
+        ]);
+        $coupon = Coupon::find($request->id);
+        $coupon->code = $request->code;
+        $coupon->type = $request->type;
+        $coupon->value = $request->value;
+        $coupon->cart_value = $request->cart_value;
+        $coupon->expiry_date = $request->expiry_date;
+        $coupon->save();
+        return redirect()->route('admin.coupons')->with('status', 'Record has been updated successfully !');
+    }
 }
