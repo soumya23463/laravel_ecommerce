@@ -13,4 +13,9 @@ class WishlistController extends Controller
         Cart::instance('wishlist')->add($request->id, $request->name, $request->quantity, $request->price)->associate('App\Models\Product');
         return redirect()->back();
     }
+    public function index()
+    {
+        $cartItems = Cart::instance('wishlist')->content();
+        return view('wishlist',compact('cartItems'));
+    }
 }
