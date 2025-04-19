@@ -101,16 +101,22 @@
             </tbody>
           </table>
           <div class="cart-table-footer">
+            @if(!Session::has("coupon"))
+            <form class="position-relative bg-body" method="POST" action="{{route('cart.coupon.apply')}}">
+                @csrf
+                <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code">
+                <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
+            </form>
+        @else
+            <form class="position-relative bg-body" method="POST" action="{{route('cart.coupon.remove')}}">
+                @csrf
+                @method('DELETE')
+                <input class="form-control text-success fw-bold" type="text" name="coupon_code" placeholder="Coupon Code" value="{{session()->get('coupon')['code']}} Applied!" readonly>
+                <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4 text-danger" type="submit" value="REMOVE COUPON">
+            </form>
+        @endif
 
-                {{--  @if(!Session::has("coupon"))  --}}
-                <form class="position-relative bg-body" method="POST" action="{{route('cart.coupon.apply')}}">
-                    @csrf
-                    <input class="form-control" type="text" name="coupon_code" placeholder="Coupon Code"
-    value="{{ Session::has('coupon') ? Session::get('coupon')['code'] . ' Applied!' : '' }}">
 
-                    <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="APPLY COUPON">
-                </form>
-            {{--  @endif  --}}
             @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ Session::get('success') }}

@@ -22,7 +22,7 @@
                     <div class="text-tiny">New Coupon</div>
                 </li>
             </ul>
-        </div>        
+        </div>
         <!-- new-category -->
         <div class="wg-box">
             <form class="form-new-product form-style-1" method="POST" action="{{route('admin.coupon.store')}}" >
@@ -56,9 +56,9 @@
                 <fieldset class="name">
                     <div class="body-title">Expiry Date <span class="tf-color-1">*</span></div>
                     <input class="flex-grow" type="date" placeholder="Expiry Date" name="expiry_date" tabindex="0" value="{{old('expiry_date')}}" aria-required="true">
-                </fieldset>  
-                @error("expiry_date") <span class="alert alert-danger text-center">{{$message}}</span> @enderror              
-                
+                </fieldset>
+                @error("expiry_date") <span class="alert alert-danger text-center">{{$message}}</span> @enderror
+
                 <div class="bot">
                     <div></div>
                     <button class="tf-button w208" type="submit">Save</button>
@@ -68,6 +68,6 @@
         <!-- /new-category -->
     </div>
     <!-- /main-content-wrap -->
-</div>                    
+</div>
 </div>
 @endsection

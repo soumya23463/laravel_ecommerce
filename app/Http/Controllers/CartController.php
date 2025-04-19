@@ -93,4 +93,12 @@ class CartController extends Controller
             ]);
         }
     }
+
+
+    public function remove_coupon_code()
+    {
+        session()->forget('coupon');
+        session()->forget('discounts');
+        return back()->with('status', 'Coupon has been removed!');
+    }
 }
