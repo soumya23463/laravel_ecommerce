@@ -42,7 +42,8 @@ Route::put('/admin/coupon/update', [AdminController::class, 'update_coupon'])->n
 Route::delete('/cart/remove-coupon', [CartController::class, 'remove_coupon_code'])->name('cart.coupon.remove');
 //checkout
 Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-
+Route::post('/place-order', [CartController::class, 'place_order'])->name('cart.place.order');
+Route::get('/order-confirmation', [CartController::class, 'confirmation'])->name('cart.confirmation');
 Route::middleware(['auth'])->group(function () {
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
 });
