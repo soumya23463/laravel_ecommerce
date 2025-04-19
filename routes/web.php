@@ -46,6 +46,9 @@ Route::post('/place-order', [CartController::class, 'place_order'])->name('cart.
 Route::get('/order-confirmation', [CartController::class, 'confirmation'])->name('cart.confirmation');
 Route::middleware(['auth'])->group(function () {
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('/account-orders',[UserController::class,'account_orders'])->name('user.account.orders');
+    Route::get('/account-order-detials/{order_id}',[UserController::class,'account_order_details'])->name('user.acccount.order.details');
+
 });
 
 Route::middleware(['auth', AuthAdmin::class])->group(function () {
