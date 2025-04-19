@@ -80,6 +80,7 @@
                                 <td class="text-center">
                                     <a href="#">
                                     <div class="list-icon-function view-icon">
+                                        <a href="{{route('admin.order.items',['order_id'=>$order->id])}}">
                                         <div class="item eye">
                                             <i class="icon-eye"></i>
                                         </div>

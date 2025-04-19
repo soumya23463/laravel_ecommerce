@@ -70,12 +70,13 @@
                 @foreach ($order->orderItems as $item)
                 <tr>
                   <td>
-                    {{--  {{ $item->product->name }} x {{ $item->quantity }}  --}}
+                    {{ $item->product->name ?? "N/A" }} x {{ $item->quantity ?? "N/A"}}
                   </td>
                   <td>
                     ${{ $item->price }}
                   </td>
                 </tr>
+                {{--  @dump($item)  --}}
                 @endforeach
 
               </tbody>

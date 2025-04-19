@@ -186,18 +186,14 @@ class CartController extends Controller
             $orderItem->save();
         }
 
-        if ($request->mode == "cod") {
-            // Handle cash on delivery logic if needed
-        } else if ($request->mode) {
-            // Handle other payment modes
-        } else {
+       
             $transaction = new Transaction();
             $transaction->user_id = $user_id;
             $transaction->order_id = $order->id;
             $transaction->mode = $request->mode;
             $transaction->status = "pending";
             $transaction->save();
-        }
+        
 
         Cart::instance('cart')->destroy();
         session()->forget('checkout');
