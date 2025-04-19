@@ -40,6 +40,8 @@ Route::post('/cart/apply-coupon', [CartController::class, 'apply_coupon_code'])-
 Route::put('/admin/coupon/update', [AdminController::class, 'update_coupon'])->name('admin.coupon.update');
 
 Route::delete('/cart/remove-coupon', [CartController::class, 'remove_coupon_code'])->name('cart.coupon.remove');
+//checkout
+Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/account-dashboard', [UserController::class, 'index'])->name('user.index');
