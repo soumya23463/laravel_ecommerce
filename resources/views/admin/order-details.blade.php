@@ -178,6 +178,9 @@
             </table>
         </div>
 
+
+
+
         <div class="wg-box mt-5">
             <h5>Update Order Status</h5>
             <form action="{{route('admin.order.status.update')}}" method="POST">

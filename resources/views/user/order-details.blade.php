@@ -188,8 +188,42 @@
                     </div>
                 </div>
             </div>
-
+            @if($order->id)
+            <div class="wg-box mt-5 text-right">
+                <form action="{{route('user.account_cancel_order')}}" method="POST">
+                    @csrf
+                    @method("PUT")
+                    <input type="hidden" name="order_id" value="{{$order->id}}" />
+                    <button type="button" class="btn btn-danger cancel-order">Cancel Order</button>
+                </form>
+            </div>
         </div>
     </section>
 </main>
 @endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(function () {
+            $(".cancel-order").on('click', function (e) {
+                e.preventDefault();
+                const form = $(this).closest("form");
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You want to cancel this record?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, cancel it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+@endpush
+
